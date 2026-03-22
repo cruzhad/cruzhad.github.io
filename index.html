@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>cruzhad · Actividades Interactivas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --mo:#5B2D8E; --mo2:#7B3FC0; --mo3:#B88EE8; --mo-f:#f3ecfb;
+    --ver:#1B6B45; --ver2:#52B788;
+    --nar:#E85D04; --nar2:#F9A53A;
+    --az:#023E8A; --az2:#1565C0;
+    --cr:#fdf9ff; --tie:#1a0a2e;
+    --gris:#ede8f5; --gris2:#d5cce8;
+    --som:0 4px 24px rgba(91,45,142,.13);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    background: var(--cr);
+    font-family:'Nunito',sans-serif;
+    color:var(--tie);
+    min-height:100vh;
+  }
+
+  /* ── HERO ── */
+  .hero{
+    background: linear-gradient(135deg, var(--mo) 0%, #2d1060 60%, #0a0520 100%);
+    padding: 48px 20px 56px;
+    text-align:center;
+    position:relative;
+    overflow:hidden;
+  }
+  .hero::before{
+    content:'';
+    position:absolute;
+    top:-60px; right:-80px;
+    width:320px; height:320px;
+    background: radial-gradient(circle, rgba(184,142,232,.18) 0%, transparent 70%);
+    pointer-events:none;
+  }
+  .hero::after{
+    content:'';
+    position:absolute;
+    bottom:-40px; left:-60px;
+    width:240px; height:240px;
+    background: radial-gradient(circle, rgba(82,183,136,.12) 0%, transparent 70%);
+    pointer-events:none;
+  }
+  .avatar-wrap{
+    position:relative;
+    display:inline-block;
+    margin-bottom:18px;
+  }
+  .avatar-wrap img{
+    width:96px; height:96px;
+    border-radius:50%;
+    border:4px solid rgba(255,255,255,.25);
+    display:block;
+  }
+  .avatar-fallback{
+    width:96px; height:96px;
+    border-radius:50%;
+    border:4px solid rgba(255,255,255,.25);
+    background: var(--mo2);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Bebas Neue',sans-serif;
+    font-size:38px;
+    color:#fff;
+    margin:0 auto 18px;
+  }
+  .hero h1{
+    font-family:'Bebas Neue',sans-serif;
+    font-size:clamp(2.4rem,8vw,4rem);
+    color:#fff;
+    letter-spacing:2px;
+    line-height:1;
+    margin-bottom:8px;
+  }
+  .hero-sub{
+    color:rgba(255,255,255,.7);
+    font-size:.95rem;
+    font-weight:600;
+    letter-spacing:.5px;
+    margin-bottom:20px;
+  }
+  .hero-bio{
+    max-width:480px;
+    margin:0 auto 24px;
+    color:rgba(255,255,255,.85);
+    font-size:.92rem;
+    line-height:1.6;
+    display:none;
+  }
+  .hero-tags{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    justify-content:center;
+    margin-bottom:0;
+  }
+  .hero-tag{
+    background:rgba(255,255,255,.12);
+    border:1px solid rgba(255,255,255,.2);
+    color:rgba(255,255,255,.9);
+    border-radius:20px;
+    padding:4px 14px;
+    font-size:.78rem;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.5px;
+  }
+
+  /* ── STATS BAR ── */
+  .stats-bar{
+    background:#fff;
+    border-bottom: 2px solid var(--gris);
+    display:flex;
+    justify-content:center;
+    gap:0;
+    padding:0;
+  }
+  .stat-item{
+    flex:1;
+    max-width:160px;
+    text-align:center;
+    padding:14px 8px;
+    border-right:1px solid var(--gris);
+  }
+  .stat-item:last-child{ border-right:none; }
+  .stat-num{
+    font-family:'Bebas Neue',sans-serif;
+    font-size:1.8rem;
+    color:var(--mo);
+    line-height:1;
+  }
+  .stat-lbl{
+    font-size:.7rem;
+    font-weight:700;
+    color:#888;
+    text-transform:uppercase;
+    letter-spacing:.5px;
+    margin-top:2px;
+  }
+
+  /* ── TOOLBAR ── */
+  .toolbar{
+    max-width:900px;
+    margin:0 auto;
+    padding:20px 16px 8px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    align-items:center;
+  }
+  .search-wrap{
+    flex:1;
+    min-width:180px;
+    position:relative;
+  }
+  .search-wrap input{
+    width:100%;
+    padding:9px 14px 9px 36px;
+    border:2px solid var(--gris2);
+    border-radius:24px;
+    font-family:'Nunito',sans-serif;
+    font-size:.88rem;
+    background:#fff;
+    color:var(--tie);
+    outline:none;
+    transition: border-color .2s;
+  }
+  .search-wrap input:focus{ border-color:var(--mo2); }
+  .search-ico{
+    position:absolute;
+    left:12px; top:50%;
+    transform:translateY(-50%);
+    font-size:14px;
+    color:#aaa;
+    pointer-events:none;
+  }
+  .sort-select{
+    padding:9px 14px;
+    border:2px solid var(--gris2);
+    border-radius:24px;
+    font-family:'Nunito',sans-serif;
+    font-size:.85rem;
+    background:#fff;
+    color:var(--tie);
+    outline:none;
+    cursor:pointer;
+    transition: border-color .2s;
+  }
+  .sort-select:focus{ border-color:var(--mo2); }
+  .results-count{
+    font-size:.8rem;
+    font-weight:700;
+    color:#888;
+    margin-left:4px;
+    white-space:nowrap;
+  }
+
+  /* ── GRID DE REPOS ── */
+  .repos-grid{
+    max-width:900px;
+    margin:0 auto;
+    padding:8px 16px 48px;
+    display:grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap:16px;
+  }
+
+  /* ── TARJETA ── */
+  .repo-card{
+    background:#fff;
+    border-radius:16px;
+    border:2px solid var(--gris);
+    padding:18px 18px 14px;
+    text-decoration:none;
+    color:inherit;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    transition: transform .18s, box-shadow .18s, border-color .18s;
+    position:relative;
+    overflow:hidden;
+  }
+  .repo-card::before{
+    content:'';
+    position:absolute;
+    top:0; left:0; right:0;
+    height:4px;
+    background:var(--card-accent, var(--mo2));
+    border-radius:16px 16px 0 0;
+  }
+  .repo-card:hover{
+    transform:translateY(-4px);
+    box-shadow: var(--som);
+    border-color:var(--mo3);
+    text-decoration:none;
+  }
+
+  .repo-name{
+    font-family:'Bebas Neue',sans-serif;
+    font-size:1.15rem;
+    color:var(--mo);
+    letter-spacing:.5px;
+    line-height:1.2;
+    word-break:break-word;
+  }
+  .repo-desc{
+    font-size:.82rem;
+    color:#555;
+    line-height:1.5;
+    flex:1;
+    min-height:36px;
+  }
+  .repo-desc.empty{ color:#bbb; font-style:italic; }
+
+  .repo-meta{
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px;
+    align-items:center;
+    margin-top:auto;
+  }
+  .repo-lang{
+    display:flex;
+    align-items:center;
+    gap:5px;
+    font-size:.75rem;
+    font-weight:700;
+    color:#666;
+  }
+  .lang-dot{
+    width:10px; height:10px;
+    border-radius:50%;
+    display:inline-block;
+    background:var(--lang-color, #ccc);
+  }
+  .repo-stars, .repo-forks{
+    font-size:.75rem;
+    font-weight:700;
+    color:#888;
+    display:flex;
+    align-items:center;
+    gap:3px;
+  }
+  .repo-updated{
+    font-size:.72rem;
+    color:#aaa;
+    margin-left:auto;
+  }
+  .repo-pages-badge{
+    display:inline-block;
+    background:var(--ver2);
+    color:#fff;
+    border-radius:10px;
+    padding:2px 9px;
+    font-size:.68rem;
+    font-weight:800;
+    text-transform:uppercase;
+    letter-spacing:.4px;
+  }
+  .repo-link-hint{
+    font-size:.72rem;
+    color:var(--mo2);
+    font-weight:700;
+    display:flex;
+    align-items:center;
+    gap:4px;
+    margin-top:2px;
+  }
+
+  /* ── LOADING ── */
+  .loading{
+    grid-column:1/-1;
+    text-align:center;
+    padding:60px 20px;
+    color:var(--mo2);
+  }
+  .spinner{
+    width:40px; height:40px;
+    border:4px solid var(--gris);
+    border-top-color:var(--mo2);
+    border-radius:50%;
+    animation:spin .8s linear infinite;
+    margin:0 auto 14px;
+  }
+  @keyframes spin{ to{transform:rotate(360deg)} }
+  .loading-txt{
+    font-weight:700;
+    font-size:.9rem;
+    color:#888;
+  }
+
+  /* ── ERROR ── */
+  .error-msg{
+    grid-column:1/-1;
+    background:#fdecea;
+    border:2px solid #e57373;
+    border-radius:12px;
+    padding:20px;
+    text-align:center;
+    color:#b71c1c;
+    font-weight:700;
+    font-size:.9rem;
+    display:none;
+  }
+
+  /* ── EMPTY ── */
+  .empty-msg{
+    grid-column:1/-1;
+    text-align:center;
+    padding:40px;
+    color:#bbb;
+    font-size:.9rem;
+    display:none;
+  }
+
+  /* ── FOOTER ── */
+  .footer{
+    background:var(--tie);
+    color:rgba(255,255,255,.5);
+    text-align:center;
+    padding:20px;
+    font-size:.78rem;
+    font-weight:600;
+  }
+  .footer a{
+    color:var(--mo3);
+    text-decoration:none;
+  }
+  .footer a:hover{ text-decoration:underline; }
+
+  /* ── SKELETON CARDS ── */
+  .skel{
+    background:#fff;
+    border-radius:16px;
+    border:2px solid var(--gris);
+    padding:18px;
+    overflow:hidden;
+  }
+  .skel-line{
+    background:linear-gradient(90deg, var(--gris) 25%, var(--gris2) 50%, var(--gris) 75%);
+    background-size:200% 100%;
+    border-radius:6px;
+    animation:shimmer 1.4s infinite;
+  }
+  @keyframes shimmer{ to{background-position:-200% 0} }
+
+  @media(max-width:520px){
+    .repos-grid{ grid-template-columns:1fr; padding:8px 10px 40px; }
+    .stats-bar{ flex-wrap:wrap; }
+    .stat-item{ min-width:80px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div id="avatar-area">
+    <div class="avatar-fallback" id="avatar-fallback">AC</div>
+  </div>
+  <h1 id="hero-title">CRUZHAD</h1>
+  <p class="hero-sub" id="hero-sub">GitHub · Actividades Interactivas</p>
+  <p class="hero-bio" id="hero-bio"></p>
+  <div class="hero-tags" id="hero-tags">
+    <span class="hero-tag">📐 Matemáticas</span>
+    <span class="hero-tag">🏙 CDMX</span>
+    <span class="hero-tag">📱 HTML5</span>
+    <span class="hero-tag">🎓 Bachillerato</span>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stat-item">
+    <div class="stat-num" id="stat-repos">—</div>
+    <div class="stat-lbl">Repositorios</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num" id="stat-stars">—</div>
+    <div class="stat-lbl">Estrellas</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num" id="stat-langs">—</div>
+    <div class="stat-lbl">Lenguajes</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num" id="stat-pages">—</div>
+    <div class="stat-lbl">Con Pages</div>
+  </div>
+</div>
+
+<!-- TOOLBAR -->
+<div class="toolbar">
+  <div class="search-wrap">
+    <span class="search-ico">🔍</span>
+    <input type="text" id="search-inp" placeholder="Buscar repositorio..." oninput="filtrar()">
+  </div>
+  <select class="sort-select" id="sort-sel" onchange="filtrar()">
+    <option value="updated">Recientes</option>
+    <option value="name">A → Z</option>
+    <option value="stars">⭐ Estrellas</option>
+    <option value="pages">📄 Con Pages</option>
+  </select>
+  <span class="results-count" id="count-lbl"></span>
+</div>
+
+<!-- GRID -->
+<div class="repos-grid" id="repos-grid">
+  <!-- Skeletons de carga -->
+  <div class="skel">
+    <div class="skel-line" style="height:20px;width:60%;margin-bottom:12px;"></div>
+    <div class="skel-line" style="height:13px;width:90%;margin-bottom:6px;"></div>
+    <div class="skel-line" style="height:13px;width:70%;"></div>
+  </div>
+  <div class="skel">
+    <div class="skel-line" style="height:20px;width:75%;margin-bottom:12px;"></div>
+    <div class="skel-line" style="height:13px;width:95%;margin-bottom:6px;"></div>
+    <div class="skel-line" style="height:13px;width:55%;"></div>
+  </div>
+  <div class="skel">
+    <div class="skel-line" style="height:20px;width:50%;margin-bottom:12px;"></div>
+    <div class="skel-line" style="height:13px;width:80%;margin-bottom:6px;"></div>
+    <div class="skel-line" style="height:13px;width:65%;"></div>
+  </div>
+  <div class="error-msg" id="error-msg">
+    ⚠️ No se pudieron cargar los repositorios. Intenta recargar la página.
+  </div>
+  <div class="empty-msg" id="empty-msg">
+    No se encontraron repositorios con ese nombre.
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <a href="https://github.com/cruzhad" target="_blank">github.com/cruzhad</a>
+  · Pensamiento Matemático · CEB 4/2 &amp; Bachilleres 17 · Prof. Adrián Cruz
+</div>
+
+<script>
+var GITHUB_USER = 'cruzhad';
+var allRepos = [];
+var reposConPages = [];
+
+// Colores de lenguajes más comunes
+var LANG_COLORS = {
+  'HTML':'#e34c26','CSS':'#563d7c','JavaScript':'#f1e05a',
+  'Python':'#3572A5','Jupyter Notebook':'#DA5B0B','TypeScript':'#2b7489',
+  'Shell':'#89e051','Markdown':'#083fa1','Ruby':'#701516',
+  'Java':'#b07219','PHP':'#4F5D95','C++':'#f34b7d'
+};
+
+// Colores de acento para tarjetas (cicla)
+var CARD_ACCENTS = [
+  '#5B2D8E','#1B6B45','#E85D04','#023E8A',
+  '#7B3FC0','#52B788','#F9A53A','#1565C0',
+  '#C1121F','#0f766e','#9333ea','#0369a1'
+];
+
+function timeAgo(dateStr) {
+  var now = new Date();
+  var d = new Date(dateStr);
+  var diff = Math.floor((now - d) / 1000);
+  if (diff < 60) return 'hace unos segundos';
+  if (diff < 3600) return 'hace ' + Math.floor(diff/60) + ' min';
+  if (diff < 86400) return 'hace ' + Math.floor(diff/3600) + ' h';
+  if (diff < 2592000) return 'hace ' + Math.floor(diff/86400) + ' días';
+  if (diff < 31536000) return 'hace ' + Math.floor(diff/2592000) + ' meses';
+  return 'hace ' + Math.floor(diff/31536000) + ' años';
+}
+
+function hasPages(repo) {
+  // Heurística: repos con nombre user.github.io, o con homepage que apunta a github.io
+  if (repo.name === GITHUB_USER + '.github.io') return true;
+  if (repo.homepage && repo.homepage.indexOf('github.io') !== -1) return true;
+  if (repo.has_pages) return true;
+  return false;
+}
+
+function getPagesURL(repo) {
+  if (repo.homepage && repo.homepage.trim() !== '') return repo.homepage.trim();
+  return 'https://' + GITHUB_USER + '.github.io/' + repo.name;
+}
+
+function renderTarjeta(repo, idx) {
+  var acento = CARD_ACCENTS[idx % CARD_ACCENTS.length];
+  var tienePages = hasPages(repo);
+  var pagesURL = tienePages ? getPagesURL(repo) : null;
+  var href = tienePages ? pagesURL : repo.html_url;
+  var target = '_blank';
+
+  var langColor = repo.language ? (LANG_COLORS[repo.language] || '#888') : '#ccc';
+  var desc = repo.description || '';
+  var descClass = desc ? '' : ' empty';
+  var descTxt = desc || 'Sin descripción';
+
+  var metaHTML = '';
+  if (repo.language) {
+    metaHTML += '<span class="repo-lang">'
+      + '<span class="lang-dot" style="background:' + langColor + '"></span>'
+      + repo.language + '</span>';
+  }
+  if (repo.stargazers_count > 0) {
+    metaHTML += '<span class="repo-stars">⭐ ' + repo.stargazers_count + '</span>';
+  }
+  if (repo.forks_count > 0) {
+    metaHTML += '<span class="repo-forks">🍴 ' + repo.forks_count + '</span>';
+  }
+  metaHTML += '<span class="repo-updated">' + timeAgo(repo.updated_at) + '</span>';
+
+  var badgeHTML = tienePages
+    ? '<span class="repo-pages-badge">📄 Pages activo</span>'
+    : '';
+
+  var hintHTML = tienePages
+    ? '<span class="repo-link-hint">🔗 Ver actividad →</span>'
+    : '<span class="repo-link-hint" style="color:#aaa;">GitHub →</span>';
+
+  return '<a class="repo-card" href="' + href + '" target="' + target + '" '
+    + 'style="--card-accent:' + acento + '">'
+    + '<div class="repo-name">' + repo.name + '</div>'
+    + badgeHTML
+    + '<div class="repo-desc' + descClass + '">' + descTxt + '</div>'
+    + '<div class="repo-meta">' + metaHTML + '</div>'
+    + hintHTML
+    + '</a>';
+}
+
+function filtrar() {
+  var q = document.getElementById('search-inp').value.trim().toLowerCase();
+  var sort = document.getElementById('sort-sel').value;
+
+  var lista = allRepos.slice();
+
+  if (q) {
+    lista = lista.filter(function(r) {
+      var nm = (r.name || '').toLowerCase();
+      var de = (r.description || '').toLowerCase();
+      return nm.indexOf(q) !== -1 || de.indexOf(q) !== -1;
+    });
+  }
+
+  if (sort === 'name') {
+    lista.sort(function(a,b){ return a.name.localeCompare(b.name); });
+  } else if (sort === 'stars') {
+    lista.sort(function(a,b){ return b.stargazers_count - a.stargazers_count; });
+  } else if (sort === 'pages') {
+    lista.sort(function(a,b){ return (hasPages(b)?1:0) - (hasPages(a)?1:0); });
+  } else {
+    lista.sort(function(a,b){ return new Date(b.updated_at) - new Date(a.updated_at); });
+  }
+
+  var grid = document.getElementById('repos-grid');
+  var emptyMsg = document.getElementById('empty-msg');
+
+  if (lista.length === 0) {
+    grid.innerHTML = '';
+    emptyMsg.style.display = 'block';
+    grid.appendChild(emptyMsg);
+  } else {
+    var html = '';
+    for (var i = 0; i < lista.length; i++) {
+      html += renderTarjeta(lista[i], i);
+    }
+    grid.innerHTML = html;
+    grid.appendChild(emptyMsg);
+    emptyMsg.style.display = 'none';
+  }
+
+  var lbl = document.getElementById('count-lbl');
+  lbl.textContent = lista.length + ' repositorio' + (lista.length !== 1 ? 's' : '');
+}
+
+function calcStats() {
+  var totalStars = 0;
+  var langs = {};
+  var pagesCount = 0;
+  for (var i = 0; i < allRepos.length; i++) {
+    totalStars += allRepos[i].stargazers_count || 0;
+    if (allRepos[i].language) langs[allRepos[i].language] = 1;
+    if (hasPages(allRepos[i])) pagesCount++;
+  }
+  document.getElementById('stat-repos').textContent = allRepos.length;
+  document.getElementById('stat-stars').textContent = totalStars;
+  document.getElementById('stat-langs').textContent = Object.keys(langs).length;
+  document.getElementById('stat-pages').textContent = pagesCount;
+}
+
+function cargarPerfil() {
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', 'https://api.github.com/users/' + GITHUB_USER, true);
+  xhr.setRequestHeader('Accept', 'application/vnd.github.v3+json');
+  xhr.onreadystatechange = function() {
+    if (xhr.readyState !== 4) return;
+    if (xhr.status === 200) {
+      var u = JSON.parse(xhr.responseText);
+      // Avatar
+      if (u.avatar_url) {
+        var avatarArea = document.getElementById('avatar-area');
+        var img = document.createElement('img');
+        img.src = u.avatar_url;
+        img.alt = GITHUB_USER;
+        img.style.cssText = 'width:96px;height:96px;border-radius:50%;border:4px solid rgba(255,255,255,.25);display:block;margin:0 auto 18px;';
+        img.onerror = function(){ img.style.display='none'; };
+        avatarArea.innerHTML = '';
+        avatarArea.appendChild(img);
+      }
+      // Bio
+      if (u.bio) {
+        var bio = document.getElementById('hero-bio');
+        bio.textContent = u.bio;
+        bio.style.display = 'block';
+      }
+      // Nombre
+      if (u.name) {
+        document.getElementById('hero-title').textContent = u.name.toUpperCase();
+      }
+    }
+  };
+  xhr.send();
+}
+
+function cargarRepos(page, acumulado) {
+  if (!page) page = 1;
+  if (!acumulado) acumulado = [];
+
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET',
+    'https://api.github.com/users/' + GITHUB_USER
+    + '/repos?per_page=100&page=' + page
+    + '&sort=updated&type=public', true);
+  xhr.setRequestHeader('Accept', 'application/vnd.github.v3+json');
+  xhr.onreadystatechange = function() {
+    if (xhr.readyState !== 4) return;
+    if (xhr.status === 200) {
+      var data = JSON.parse(xhr.responseText);
+      acumulado = acumulado.concat(data);
+      if (data.length === 100) {
+        cargarRepos(page + 1, acumulado);
+      } else {
+        allRepos = acumulado;
+        calcStats();
+        filtrar();
+      }
+    } else if (xhr.status === 404) {
+      mostrarError('Usuario no encontrado.');
+    } else if (xhr.status === 403) {
+      mostrarError('Límite de API alcanzado. Intenta en unos minutos.');
+    } else {
+      mostrarError('Error al cargar repositorios (HTTP ' + xhr.status + ').');
+    }
+  };
+  xhr.send();
+}
+
+function mostrarError(msg) {
+  var grid = document.getElementById('repos-grid');
+  grid.innerHTML = '';
+  var err = document.getElementById('error-msg');
+  err.textContent = '⚠️ ' + msg;
+  err.style.display = 'block';
+  grid.appendChild(err);
+}
+
+window.onload = function() {
+  cargarPerfil();
+  cargarRepos();
+};
+</script>
+</body>
+</html>
